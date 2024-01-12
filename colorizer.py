@@ -1,14 +1,13 @@
 # modules
 import numpy
 import cv2
-import os
 
 
-# color image function
-def color_image(image_path):
-    mod_pro = os.path.join(r"model/colorizer/colorization_deploy_v2.prototxt")
-    mod_pts = os.path.join(r"model/colorizer/pts_in_hull.npy")
-    mod_caf = os.path.join(r"model/colorizer/colorization_release_v2.caffemodel")
+# colorize function
+def colorize_image(image_path):
+    mod_pro = r"model/colorizer/colorization_deploy_v2.prototxt"
+    mod_pts = r"model/colorizer/pts_in_hull.npy"
+    mod_caf = r"model/colorizer/colorization_release_v2.caffemodel"
 
     # Load the Model
     net = cv2.dnn.readNetFromCaffe(mod_pro, mod_caf)

@@ -31,7 +31,7 @@ def color_image(image_path):
     cap_l = cv2.split(resized)[0]
     cap_l -= 50
 
-    # colorize a --> b
+    # colorize
     net.setInput(cv2.dnn.blobFromImage(cap_l))
     ab = net.forward()[0, :, :, :].transpose((1, 2, 0))
     ab = cv2.resize(ab, (image.shape[1], image.shape[0]))

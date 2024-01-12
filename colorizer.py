@@ -45,6 +45,3 @@ def color_image(image_path):
     # output
     output_path = "output_color.jpg"
     cv2.imwrite(output_path, colorized)
-
-
-color_image("ab.jpg")

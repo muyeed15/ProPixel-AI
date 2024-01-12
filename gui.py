@@ -10,7 +10,7 @@ bg_col = "#1d232a"
 can_col = "#15191e"
 but_col = "#6419e6"
 
-storage = [""]
+storage = ["", ""]
 resolution = [1920, 1080]
 
 
@@ -35,8 +35,9 @@ def execute_function_with_splash(function, message):
     show_splash_screen(message)
 
     def execute_and_close_splash():
-        function()
+        storage[1] = function()
         splash_screen.destroy()
+        preview(storage[1])
 
     threading.Thread(target=execute_and_close_splash).start()
 
@@ -74,10 +75,41 @@ def remove_bg():
     pass
 
 
-def colorize_photos():
+def colorize_photo():
     if storage[0] != "":
         from colorizer import colorize_image
-        execute_function_with_splash(lambda: colorize_image(storage[0]), "Colorizing Image")
+        (execute_function_with_splash(lambda: colorize_image(storage[0]), "Colorizing Image"))
+
+
+def settings_func():
+    pass
+
+
+def preview(output_path):
+    p_win = Toplevel(root)
+    p_win.title("Output Preview")
+    p_win.config(bg=bg_col)
+
+    p_win.geometry(f"{screen_width}x{screen_height}")
+
+    p_win.resizable(False, False)
+
+    img_path = StringVar()
+    out_canvas = Canvas(p_win, width=screen_width, height=screen_height, bd=0, highlightthickness=0, relief='ridge')
+    out_canvas.configure(bg=can_col)
+
+    img_path.set(output_path)
+    image = Image.open(output_path)
+
+    image.thumbnail((screen_width - 196, screen_height - 16))
+    result_image = ImageTk.PhotoImage(image=image)
+
+    x_position = (screen_width - image.width) // 2
+    y_position = (screen_height - image.height) // 2
+
+    out_canvas.create_image(x_position, y_position, anchor=NW, image=result_image)
+    out_canvas.image = result_image
+    out_canvas.pack()
 
 
 root = CTk()
@@ -110,7 +142,7 @@ browse_button.bind("<Button-1>", load_image)
 upscale_button = CTkButton(button_frame, text="Upscale Image", font=font, fg_color=but_col, command=upscale_photos)
 remove_bg_button = CTkButton(button_frame, text="Remove Background", font=font, fg_color=but_col, command=remove_bg)
 colorize_button = CTkButton(button_frame, text="Colorize B&W Image", font=font, fg_color=but_col,
-                            command=colorize_photos)
+                            command=colorize_photo)
 settings_button = CTkButton(button_frame, text="Settings", font=font)
 
 # buttons layout

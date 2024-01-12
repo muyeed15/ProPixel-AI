@@ -1,6 +1,7 @@
 # modules
 import numpy
 import cv2
+import os
 
 
 # colorize function
@@ -42,5 +43,8 @@ def colorize_image(image_path):
     cv2.waitKey(0)
 
     # output
-    output_path = "output_color.jpg"
+    file_name, file_extension = os.path.splitext(os.path.split(image_path)[1])
+    output_path = os.path.split(image_path)[0] + "/" + file_name + "_ProPixel_AI_Colorized" + file_extension
     cv2.imwrite(output_path, colorized)
+
+    return output_path

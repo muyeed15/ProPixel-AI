@@ -12,7 +12,7 @@ def remove_background(image_path):
 
     # Output
     file_name, file_extension = os.path.splitext(os.path.split(image_path)[1])
-    output_path = os.path.split(image_path)[0] + "/" + file_name + "_ProPixel_AI_RBG" + ".png"
+    output_path = os.path.split(image_path)[0] + "/" + file_name + "_ProPixel_AI_RmBg" + ".png"
 
     # Load image
     original_image = cv2.imread(image_path)

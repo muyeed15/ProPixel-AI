@@ -3,6 +3,12 @@ from tkinter import *
 from customtkinter import *
 from PIL import Image, ImageTk
 import threading
+import shutil
+
+# Remove cache folder
+try:
+    shutil.rmtree("cache")
+except: pass
 
 set_appearance_mode("light")
 set_default_color_theme("green")
@@ -71,7 +77,9 @@ def display_text():
 
 
 def upscale_photos():
-    pass
+    if storage[0] != "":
+        from upscaler import upscale_image
+        (execute_function_with_splash(lambda: upscale_image(storage[0]), "Up-scaling Image"))
 
 
 def remove_bg():

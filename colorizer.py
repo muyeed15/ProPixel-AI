@@ -44,7 +44,7 @@ def colorize_image(image_path):
 
     # Output
     file_name, file_extension = os.path.splitext(os.path.split(image_path)[1])
-    output_path = os.path.split(image_path)[0] + "/" + file_name + "_ProPixel_AI_Color" + file_extension
+    output_path = os.path.split(image_path)[0] + "/" + file_name + "_ProPixel_AI_Col" + file_extension
     cv2.imwrite(output_path, colorized)
 
     return output_path

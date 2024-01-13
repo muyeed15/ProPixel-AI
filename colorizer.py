@@ -1,10 +1,10 @@
-# modules
+# Modules
 import numpy
 import cv2
 import os
 
 
-# colorize function
+# Colorize function
 def colorize_image(image_path):
     mod_pro = r"model/colorizer/colorization_deploy_v2.prototxt"
     mod_pts = r"model/colorizer/pts_in_hull.npy"
@@ -26,12 +26,12 @@ def colorize_image(image_path):
     scaled = image.astype("float32") / 255.0
     lab = cv2.cvtColor(scaled, cv2.COLOR_BGR2LAB)
 
-    # resize
+    # Resize
     resized = cv2.resize(lab, (224, 224))
     cap_l = cv2.split(resized)[0]
     cap_l -= 50
 
-    # colorize
+    # Colorize
     net.setInput(cv2.dnn.blobFromImage(cap_l))
     ab = net.forward()[0, :, :, :].transpose((1, 2, 0))
     ab = cv2.resize(ab, (image.shape[1], image.shape[0]))
@@ -42,9 +42,9 @@ def colorize_image(image_path):
     colorized = (255 * colorized).astype("uint8")
     cv2.waitKey(0)
 
-    # output
+    # Output
     file_name, file_extension = os.path.splitext(os.path.split(image_path)[1])
-    output_path = os.path.split(image_path)[0] + "/" + file_name + "_ProPixel_AI_Colorized" + file_extension
+    output_path = os.path.split(image_path)[0] + "/" + file_name + "_ProPixel_AI_Color" + file_extension
     cv2.imwrite(output_path, colorized)
 
     return output_path

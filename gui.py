@@ -143,7 +143,7 @@ def settings_func():
 
     # Widgets in Right Frame
     Label(right_frame, text=" ", bg=can_col, fg="#cac9c9", font=("Arial", 2)).pack(padx=5, anchor=NW)
-    Label(right_frame, text="Developers", bg=can_col, fg="white", font=("Arial", 13)).pack(padx=5, anchor=NW)
+    Label(right_frame, text="Credits", bg=can_col, fg="white", font=("Arial", 13)).pack(padx=5, anchor=NW)
     Label(right_frame, text="ProPixel AI : muyeed15", bg=can_col, fg="#cac9c9", font=("Arial", 10)).pack(padx=5,
                                                                                                          anchor=NW)
     Label(right_frame, text="Real-ESRGAN : Xintao", bg=can_col, fg="#cac9c9", font=("Arial", 10)).pack(padx=5,

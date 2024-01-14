@@ -268,7 +268,7 @@ Label(button_frame, text="Tweak Settings :" + " " * 10, font="Arial, 10", foregr
 settings_button.pack(padx=10, pady=3, ipadx=20)
 update_button.pack(padx=10, pady=3, ipadx=20)
 
-# Canvas bind
+# Canvas command
 canvas.bind("<Button-1>", load_image)
 
 root.mainloop()

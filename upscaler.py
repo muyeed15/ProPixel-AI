@@ -36,8 +36,8 @@ def upscale_image(image_path):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
     # Scale details
-    model = RealESRGAN(device, scale=4)
-    model.load_weights(r"model/upscaler/RealESRGAN_x4.pth")
+    model = RealESRGAN(device, scale=2)
+    model.load_weights(r"model/upscaler/RealESRGAN_x2.pth")
 
     # Path
     path_to_image = fr"cache/{os.path.split(image_path)[1]}"

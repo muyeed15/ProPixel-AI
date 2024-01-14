@@ -155,7 +155,8 @@ def preview(output_path):
     Label(pre_button_frame, text="", font="Arial, 1", foreground=bg_col, background=bg_col).pack()
     pre_title.pack()
     Label(pre_button_frame, text="", font="Arial, 11", foreground=bg_col, background=bg_col).pack()
-    Label(pre_button_frame, text="Open Folder :" + " " * 15, font="Arial, 10", foreground="white", background=bg_col).pack()
+    Label(pre_button_frame, text="Open Folder :" + " " * 15, font="Arial, 10", foreground="white",
+          background=bg_col).pack()
     pre_browse_button.pack(padx=10, pady=10, ipadx=20, ipady=15)
 
 
@@ -187,7 +188,8 @@ upscale_button = CTkButton(button_frame, text="Upscale Image", font=font, fg_col
 remove_bg_button = CTkButton(button_frame, text="Remove Background", font=font, fg_color=but_col, command=remove_bg)
 colorize_button = CTkButton(button_frame, text="Colorize B&W Image", font=font, fg_color=but_col,
                             command=colorize_photo)
-settings_button = CTkButton(button_frame, text="Settings", font=font)
+settings_button = CTkButton(button_frame, text="Settings", font=font, fg_color=but_col)
+update_button = CTkButton(button_frame, text="Check Update", font=font, fg_color=but_col)
 
 # Buttons layout
 button_frame.pack()
@@ -203,7 +205,8 @@ remove_bg_button.pack(padx=10, ipadx=20, ipady=15)
 colorize_button.pack(padx=10, pady=10, ipadx=20, ipady=15)
 Label(button_frame, text="", font="Arial, 11", foreground=bg_col, background=bg_col).pack()
 Label(button_frame, text="Tweak Settings :" + " " * 10, font="Arial, 10", foreground="white", background=bg_col).pack()
-settings_button.pack(padx=10, pady=10, ipadx=20, ipady=15)
+settings_button.pack(padx=10, pady=3, ipadx=20)
+update_button.pack(padx=10, pady=3, ipadx=20)
 
 # Canvas bind
 canvas.bind("<Button-1>", load_image)

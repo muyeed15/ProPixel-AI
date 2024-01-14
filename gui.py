@@ -8,7 +8,8 @@ import shutil
 # Remove cache folder
 try:
     shutil.rmtree("cache")
-except: pass
+except:
+    pass
 
 set_appearance_mode("light")
 set_default_color_theme("green")
@@ -21,6 +22,9 @@ storage = ["", ""]
 resolution = [1920, 1080]
 screen = [1220, 592]
 position = [int((resolution[0] - screen[0]) / 2), int((resolution[1] - screen[1]) / 2)]
+
+screen2 = [552, 261]
+position2 = [int((resolution[0] - screen2[0]) / 2), int((resolution[1] - screen2[1]) / 2)]
 
 
 def show_splash_screen(message):
@@ -95,7 +99,65 @@ def colorize_photo():
 
 
 def settings_func():
-    pass
+    s_win = Toplevel(root)
+    s_win.title("ProPixel AI : Settings")
+
+    s_win.config(bg=bg_col)
+
+    s_win.geometry(f"{screen2[0]}x{screen2[1]}+{position2[0]}+{position2[1]}")
+
+    s_win.resizable(False, False)
+
+    # Left Frame
+    left_frame = Frame(s_win, bg=bg_col)
+    left_frame.grid(row=0, column=0, padx=8)
+
+    # Widgets in Left Frame
+    Label(left_frame, text="Settings", font=("Arial", 20), bg=bg_col, fg="white").pack(pady=10, anchor=NW)
+
+    upscale_label = Label(left_frame, text="Upscale Factor", bg=bg_col, fg="white", font=("Arial", 13))
+    upscale_label.pack(pady=5, anchor=NW)
+
+    def up_box_callback(choice):
+        print(choice)
+
+    up_box = CTkOptionMenu(left_frame, values=["2x", "4x"], command=up_box_callback, font=("Arial", 13))
+    up_box.pack(pady=10, anchor=NW, ipadx=2)
+    up_box.set("2x")
+
+    colorizing_label = Label(left_frame, text="CPL (Color)", bg=bg_col, fg="white", font=("Arial", 13))
+    colorizing_label.pack(pady=5, anchor=NW)
+
+    colorizing_options = list(map(str, list(range(0, 110, 10))))
+
+    def col_box_callback(choice):
+        print(choice)
+
+    col_box = CTkOptionMenu(left_frame, values=colorizing_options, command=col_box_callback, font=("Arial", 13))
+    col_box.pack(pady=10, ipadx=2, anchor=NW)
+    col_box.set("50")
+
+    # Right Frame
+    right_frame = Frame(s_win, bg=can_col)
+    right_frame.grid(row=0, column=1)
+
+    # Widgets in Right Frame
+    Label(right_frame, text=" ", bg=can_col, fg="#cac9c9", font=("Arial", 2)).pack(padx=5, anchor=NW)
+    Label(right_frame, text="Developers", bg=can_col, fg="white", font=("Arial", 13)).pack(padx=5, anchor=NW)
+    Label(right_frame, text="ProPixel AI : muyeed15", bg=can_col, fg="#cac9c9", font=("Arial", 10)).pack(padx=5,
+                                                                                                         anchor=NW)
+    Label(right_frame, text="Real-ESRGAN : Xintao", bg=can_col, fg="#cac9c9", font=("Arial", 10)).pack(padx=5,
+                                                                                                       anchor=NW)
+    Label(right_frame, text="CustomTkinter : TomSchimansky", bg=can_col, fg="#cac9c9", font=("Arial", 10)).pack(padx=5,
+                                                                                                                anchor=NW)
+    Label(right_frame, text="Colorful Image Colorization : richzhang", bg=can_col, fg="#cac9c9",
+          font=("Arial", 10)).pack(padx=5, anchor=NW)
+    Label(right_frame, text="Dichotomous Image Segmentation (DIS) : xuebinqin", bg=can_col, fg="#cac9c9",
+          font=("Arial", 10)).pack(padx=5, anchor=NW)
+    Label(right_frame, text="\n\n\n", bg=can_col, fg="#cac9c9", font=("Arial", 8)).pack(padx=5, anchor=NW)
+
+    Label(s_win, text=" " * 69 + "Version: 1.0.0", bg=bg_col, fg="#cac9c9", font=("Arial", 10)).grid(row=1, column=1)
+    s_win.mainloop()
 
 
 def preview(output_path):
@@ -107,10 +169,8 @@ def preview(output_path):
                 os.system('open "{}"'.format(path))
             elif sys.platform.startswith('linux'):
                 os.system('xdg-open "{}"'.format(path))
-            else:
-                print("Unsupported platform: {}".format(sys.platform))
-        except Exception as e:
-            print("Error opening folder: {}".format(e))
+        except:
+            pass
 
     def ex_open_folder():
         open_folder(os.path.split(storage[0])[0])
@@ -188,8 +248,8 @@ upscale_button = CTkButton(button_frame, text="Upscale Image", font=font, fg_col
 remove_bg_button = CTkButton(button_frame, text="Remove Background", font=font, fg_color=but_col, command=remove_bg)
 colorize_button = CTkButton(button_frame, text="Colorize B&W Image", font=font, fg_color=but_col,
                             command=colorize_photo)
-settings_button = CTkButton(button_frame, text="Settings", font=font, fg_color=but_col)
-update_button = CTkButton(button_frame, text="Check Update", font=font, fg_color=but_col)
+settings_button = CTkButton(button_frame, text="Settings", font=font, command=settings_func)
+update_button = CTkButton(button_frame, text="Check Updates", font=font)
 
 # Buttons layout
 button_frame.pack()

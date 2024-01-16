@@ -23,9 +23,11 @@ but_col = "#6419e6"
 
 storage = ["", ""]
 
+# GUI (Head)
 root = CTk()
 
 resolution = [root.winfo_screenwidth(), root.winfo_screenheight()]
+
 screen = [1220, 592]
 position = [int((resolution[0] - screen[0]) / 2), int((resolution[1] - screen[1]) / 2)]
 
@@ -35,14 +37,15 @@ position2 = [int((resolution[0] - screen2[0]) / 2), int((resolution[1] - screen2
 
 def show_splash_screen(message):
     global splash_screen
+    
     splash_screen = Toplevel(root)
-
+    
     splash_width = 300
     splash_height = 60
     x_position = int((resolution[0] - splash_width) / 2)
     y_position = int((resolution[1] - splash_height) / 2)
     splash_screen.geometry(f"{splash_width}x{splash_height}+{x_position}+{y_position}")
-
+    
     splash_screen.title("Processing")
     splash_screen.configure(bg=bg_col)
 
@@ -54,6 +57,8 @@ def execute_function_with_splash(function, message):
     show_splash_screen(message)
 
     def execute_and_close_splash():
+        global splash_screen
+        
         storage[1] = function()
         root.after(0, lambda: preview(storage[1]))
         splash_screen.destroy()
@@ -75,7 +80,6 @@ def load_image(event):
 
         x_position = (1024 - image.width) // 2
         y_position = (576 - image.height) // 2
-
         canvas.create_image(x_position, y_position, anchor=NW, image=result_image)
         canvas.image = result_image
 
@@ -106,12 +110,11 @@ def colorize_photo():
 
 def settings_func():
     s_win = Toplevel(root)
+    
     s_win.title("ProPixel AI : Settings")
-
     s_win.config(bg=bg_col)
 
     s_win.geometry(f"{screen2[0]}x{screen2[1]}+{position2[0]}+{position2[1]}")
-
     s_win.resizable(False, False)
 
     # Left Frame
@@ -120,13 +123,13 @@ def settings_func():
 
     # Widgets in Left Frame
     Label(left_frame, text="Settings", font=("Arial", 24), bg=bg_col, fg="white").pack(pady=10, anchor=NW)
-
     upscale_label = Label(left_frame, text="Upscale Factor", bg=bg_col, fg="white", font=("Arial", 12))
     upscale_label.pack(pady=5, anchor=NW)
 
     def up_box_callback(choice):
         print(choice)
 
+    
     up_box = CTkOptionMenu(left_frame, values=["2x", "4x"], command=up_box_callback, font=("Arial", 15))
     up_box.pack(pady=10, anchor=NW, ipadx=2)
     up_box.set("2x")
@@ -134,11 +137,11 @@ def settings_func():
     colorizing_label = Label(left_frame, text="CPL (Color)", bg=bg_col, fg="white", font=("Arial", 12))
     colorizing_label.pack(pady=5, anchor=NW)
 
-    colorizing_options = list(map(str, list(range(0, 110, 10))))
-
     def col_box_callback(choice):
         print(choice)
 
+    
+    colorizing_options = list(map(str, list(range(0, 110, 10))))
     col_box = CTkOptionMenu(left_frame, values=colorizing_options, command=col_box_callback, font=("Arial", 15))
     col_box.pack(pady=10, ipadx=2, anchor=NW)
     col_box.set("50")
@@ -150,18 +153,12 @@ def settings_func():
     # Widgets in Right Frame
     Label(right_frame, text=" ", bg=can_col, fg="#cac9c9", font=("Arial", 2)).pack(padx=5, anchor=NW)
     Label(right_frame, text="Credits", bg=can_col, fg="white", font=("Arial", 24)).pack(padx=5, anchor=NW)
-    Label(right_frame, text="ProPixel AI : muyeed15", bg=can_col, fg="#cac9c9", font=("Arial", 10)).pack(padx=5,
-                                                                                                            anchor=NW)
-    Label(right_frame, text="Real-ESRGAN : Xintao", bg=can_col, fg="#cac9c9", font=("Arial", 10)).pack(padx=5,
-                                                                                                        anchor=NW)
-    Label(right_frame, text="CustomTkinter : TomSchimansky", bg=can_col, fg="#cac9c9", font=("Arial", 10)).pack(padx=5,
-                                                                                                                anchor=NW)
-    Label(right_frame, text="Colorful Image Colorization : richzhang", bg=can_col, fg="#cac9c9",
-            font=("Arial", 10)).pack(padx=5, anchor=NW)
-    Label(right_frame, text="Dichotomous Image Segmentation (DIS) : xuebinqin", bg=can_col, fg="#cac9c9",
-            font=("Arial", 10)).pack(padx=5, anchor=NW)
+    Label(right_frame, text="ProPixel AI : muyeed15", bg=can_col, fg="#cac9c9", font=("Arial", 10)).pack(padx=5, anchor=NW)
+    Label(right_frame, text="Real-ESRGAN : Xintao", bg=can_col, fg="#cac9c9", font=("Arial", 10)).pack(padx=5, anchor=NW)
+    Label(right_frame, text="CustomTkinter : TomSchimansky", bg=can_col, fg="#cac9c9", font=("Arial", 10)).pack(padx=5, anchor=NW)
+    Label(right_frame, text="Colorful Image Colorization : richzhang", bg=can_col, fg="#cac9c9", font=("Arial", 10)).pack(padx=5, anchor=NW)
+    Label(right_frame, text="Dichotomous Image Segmentation (DIS) : xuebinqin", bg=can_col, fg="#cac9c9", font=("Arial", 10)).pack(padx=5, anchor=NW)
     Label(right_frame, text="\n"*5, bg=can_col, fg="#cac9c9", font=("Arial", 8)).pack(padx=5, anchor=NW)
-
     Label(s_win, text=" " * 58 + "Version: " + version, bg=bg_col, fg="#cac9c9", font=("Arial", 10)).grid(row=1, column=1)
 
 
@@ -177,16 +174,15 @@ def preview(output_path):
         except:
             pass
 
+
     def ex_open_folder():
         open_folder(os.path.split(storage[0])[0])
 
+
     p_win = Toplevel(root)
     p_win.title("ProPixel AI : Preview")
-
     p_win.config(bg=bg_col)
-
     p_win.geometry(f"{screen[0]}x{screen[1]}+{position[0]}+{position[1]}")
-
     p_win.resizable(False, False)
 
     preview_path = StringVar()
@@ -197,16 +193,13 @@ def preview(output_path):
 
     preview_path.set(output_path)
     image = Image.open(output_path)
-
     image.thumbnail((1024, 576))
     result_image = ImageTk.PhotoImage(image=image)
 
     x_position = (1024 - image.width) // 2
     y_position = (576 - image.height) // 2
-
     out_canvas.create_image(x_position, y_position, anchor=NW, image=result_image)
     out_canvas.image = result_image
-
     out_canvas.pack(side=RIGHT)
 
     # Buttons
@@ -220,26 +213,22 @@ def preview(output_path):
     Label(pre_button_frame, text="", font="Arial, 2", foreground=bg_col, background=bg_col).pack()
     pre_title.pack()
     Label(pre_button_frame, text="", font="Arial, 5", foreground=bg_col, background=bg_col).pack()
-    Label(pre_button_frame, text="Open Folder :" + " " * 15, font="Arial, 12", foreground="white",
-            background=bg_col).pack()
+    Label(pre_button_frame, text="Open Folder :" + " " * 15, font="Arial, 12", foreground="white", background=bg_col).pack()
     pre_browse_button.pack(padx=10, pady=10, ipadx=20, ipady=15)
 
 
+# GUI (Tail)
 root.title("ProPixel AI")
-
 root.config(bg=bg_col)
 
 root.geometry(f"{screen[0]}x{screen[1]}+{position[0]}+{position[1]}")
-
 root.resizable(False, False)
 
 image_path = StringVar()
-
 Label(root, text=" ", font="Arial, 10", foreground=bg_col, background=bg_col).pack(side=RIGHT)
 canvas = Canvas(root, width=1024, height=576, bd=0, highlightthickness=0, relief='ridge')
 canvas.configure(bg=can_col)
 canvas.pack(side=RIGHT)
-
 display_text()
 
 # Buttons
@@ -250,8 +239,7 @@ browse_button = CTkButton(button_frame, text="Browse", font=font)
 browse_button.bind("<Button-1>", load_image)
 upscale_button = CTkButton(button_frame, text="Upscale Image", font=font, fg_color=but_col, command=upscale_photos)
 remove_bg_button = CTkButton(button_frame, text="Remove Background", font=font, fg_color=but_col, command=remove_bg)
-colorize_button = CTkButton(button_frame, text="Colorize B&W Image", font=font, fg_color=but_col,
-                            command=colorize_photo)
+colorize_button = CTkButton(button_frame, text="Colorize B&W Image", font=font, fg_color=but_col, command=colorize_photo)
 settings_button = CTkButton(button_frame, text="Settings", font=font, command=settings_func, fg_color=but_col)
 update_button = CTkButton(button_frame, text="Check Updates", font=font, fg_color=but_col)
 

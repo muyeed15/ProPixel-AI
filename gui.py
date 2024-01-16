@@ -22,7 +22,10 @@ can_col = "#15191e"
 but_col = "#6419e6"
 
 storage = ["", ""]
-resolution = [1920, 1080]
+
+root = CTk()
+
+resolution = [root.winfo_screenwidth(), root.winfo_screenheight()]
 screen = [1220, 592]
 position = [int((resolution[0] - screen[0]) / 2), int((resolution[1] - screen[1]) / 2)]
 
@@ -124,7 +127,7 @@ def settings_func():
     def up_box_callback(choice):
         print(choice)
 
-    up_box = CTkOptionMenu(left_frame, values=["2x", "4x"], command=up_box_callback, font=("Arial", 13))
+    up_box = CTkOptionMenu(left_frame, values=["2x", "4x"], command=up_box_callback, font=("Arial", 15))
     up_box.pack(pady=10, anchor=NW, ipadx=2)
     up_box.set("2x")
 
@@ -136,7 +139,7 @@ def settings_func():
     def col_box_callback(choice):
         print(choice)
 
-    col_box = CTkOptionMenu(left_frame, values=colorizing_options, command=col_box_callback, font=("Arial", 13))
+    col_box = CTkOptionMenu(left_frame, values=colorizing_options, command=col_box_callback, font=("Arial", 15))
     col_box.pack(pady=10, ipadx=2, anchor=NW)
     col_box.set("50")
 
@@ -222,7 +225,6 @@ def preview(output_path):
     pre_browse_button.pack(padx=10, pady=10, ipadx=20, ipady=15)
 
 
-root = CTk()
 root.title("ProPixel AI")
 
 root.config(bg=bg_col)

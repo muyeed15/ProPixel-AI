@@ -5,6 +5,9 @@ from PIL import Image, ImageTk
 import threading
 import shutil
 
+# Version
+version = "1.0.0"
+
 # Remove cache folder
 try:
     shutil.rmtree("cache")
@@ -23,7 +26,7 @@ resolution = [1920, 1080]
 screen = [1220, 592]
 position = [int((resolution[0] - screen[0]) / 2), int((resolution[1] - screen[1]) / 2)]
 
-screen2 = [552, 261]
+screen2 = [483, 235]
 position2 = [int((resolution[0] - screen2[0]) / 2), int((resolution[1] - screen2[1]) / 2)]
 
 
@@ -113,9 +116,9 @@ def settings_func():
     left_frame.grid(row=0, column=0, padx=8)
 
     # Widgets in Left Frame
-    Label(left_frame, text="Settings", font=("Arial", 20), bg=bg_col, fg="white").pack(pady=10, anchor=NW)
+    Label(left_frame, text="Settings", font=("Arial", 24), bg=bg_col, fg="white").pack(pady=10, anchor=NW)
 
-    upscale_label = Label(left_frame, text="Upscale Factor", bg=bg_col, fg="white", font=("Arial", 13))
+    upscale_label = Label(left_frame, text="Upscale Factor", bg=bg_col, fg="white", font=("Arial", 12))
     upscale_label.pack(pady=5, anchor=NW)
 
     def up_box_callback(choice):
@@ -125,7 +128,7 @@ def settings_func():
     up_box.pack(pady=10, anchor=NW, ipadx=2)
     up_box.set("2x")
 
-    colorizing_label = Label(left_frame, text="CPL (Color)", bg=bg_col, fg="white", font=("Arial", 13))
+    colorizing_label = Label(left_frame, text="CPL (Color)", bg=bg_col, fg="white", font=("Arial", 12))
     colorizing_label.pack(pady=5, anchor=NW)
 
     colorizing_options = list(map(str, list(range(0, 110, 10))))
@@ -143,21 +146,20 @@ def settings_func():
 
     # Widgets in Right Frame
     Label(right_frame, text=" ", bg=can_col, fg="#cac9c9", font=("Arial", 2)).pack(padx=5, anchor=NW)
-    Label(right_frame, text="Credits", bg=can_col, fg="white", font=("Arial", 13)).pack(padx=5, anchor=NW)
+    Label(right_frame, text="Credits", bg=can_col, fg="white", font=("Arial", 24)).pack(padx=5, anchor=NW)
     Label(right_frame, text="ProPixel AI : muyeed15", bg=can_col, fg="#cac9c9", font=("Arial", 10)).pack(padx=5,
-                                                                                                         anchor=NW)
+                                                                                                            anchor=NW)
     Label(right_frame, text="Real-ESRGAN : Xintao", bg=can_col, fg="#cac9c9", font=("Arial", 10)).pack(padx=5,
-                                                                                                       anchor=NW)
+                                                                                                        anchor=NW)
     Label(right_frame, text="CustomTkinter : TomSchimansky", bg=can_col, fg="#cac9c9", font=("Arial", 10)).pack(padx=5,
                                                                                                                 anchor=NW)
     Label(right_frame, text="Colorful Image Colorization : richzhang", bg=can_col, fg="#cac9c9",
-          font=("Arial", 10)).pack(padx=5, anchor=NW)
+            font=("Arial", 10)).pack(padx=5, anchor=NW)
     Label(right_frame, text="Dichotomous Image Segmentation (DIS) : xuebinqin", bg=can_col, fg="#cac9c9",
-          font=("Arial", 10)).pack(padx=5, anchor=NW)
-    Label(right_frame, text="\n\n\n", bg=can_col, fg="#cac9c9", font=("Arial", 8)).pack(padx=5, anchor=NW)
+            font=("Arial", 10)).pack(padx=5, anchor=NW)
+    Label(right_frame, text="\n"*5, bg=can_col, fg="#cac9c9", font=("Arial", 8)).pack(padx=5, anchor=NW)
 
-    Label(s_win, text=" " * 69 + "Version: 1.0.0", bg=bg_col, fg="#cac9c9", font=("Arial", 10)).grid(row=1, column=1)
-    s_win.mainloop()
+    Label(s_win, text=" " * 58 + "Version: " + version, bg=bg_col, fg="#cac9c9", font=("Arial", 10)).grid(row=1, column=1)
 
 
 def preview(output_path):
@@ -205,18 +207,18 @@ def preview(output_path):
     out_canvas.pack(side=RIGHT)
 
     # Buttons
-    pre_font = ("Arial", 13)
+    pre_font = ("Arial", 15)
     pre_button_frame = Frame(p_win, background=bg_col)
-    pre_title = Label(pre_button_frame, text="Preview", font="Arial, 20", foreground="white", background=bg_col)
-    pre_browse_button = CTkButton(pre_button_frame, text="Open", font=pre_font, command=ex_open_folder)
+    pre_title = Label(pre_button_frame, text="Preview" + " "*6, font="Arial, 24", foreground="white", background=bg_col)
+    pre_browse_button = CTkButton(pre_button_frame, text="Open", font=pre_font)
 
     # Buttons layout
     pre_button_frame.pack()
-    Label(pre_button_frame, text="", font="Arial, 1", foreground=bg_col, background=bg_col).pack()
+    Label(pre_button_frame, text="", font="Arial, 2", foreground=bg_col, background=bg_col).pack()
     pre_title.pack()
-    Label(pre_button_frame, text="", font="Arial, 11", foreground=bg_col, background=bg_col).pack()
-    Label(pre_button_frame, text="Open Folder :" + " " * 15, font="Arial, 10", foreground="white",
-          background=bg_col).pack()
+    Label(pre_button_frame, text="", font="Arial, 5", foreground=bg_col, background=bg_col).pack()
+    Label(pre_button_frame, text="Open Folder :" + " " * 15, font="Arial, 12", foreground="white",
+            background=bg_col).pack()
     pre_browse_button.pack(padx=10, pady=10, ipadx=20, ipady=15)
 
 
@@ -239,34 +241,35 @@ canvas.pack(side=RIGHT)
 display_text()
 
 # Buttons
-font = ("Arial", 13)
+font = ("Arial", 15)
 button_frame = Frame(root, background=bg_col)
-title = Label(button_frame, text="ProPixel AI", font="Arial, 20", foreground="white", background=bg_col)
+title = Label(button_frame, text="ProPixel AI", font="Arial, 24", foreground="white", background=bg_col)
 browse_button = CTkButton(button_frame, text="Browse", font=font)
 browse_button.bind("<Button-1>", load_image)
 upscale_button = CTkButton(button_frame, text="Upscale Image", font=font, fg_color=but_col, command=upscale_photos)
 remove_bg_button = CTkButton(button_frame, text="Remove Background", font=font, fg_color=but_col, command=remove_bg)
 colorize_button = CTkButton(button_frame, text="Colorize B&W Image", font=font, fg_color=but_col,
                             command=colorize_photo)
-settings_button = CTkButton(button_frame, text="Settings", font=font, command=settings_func)
-update_button = CTkButton(button_frame, text="Check Updates", font=font)
+settings_button = CTkButton(button_frame, text="Settings", font=font, command=settings_func, fg_color=but_col)
+update_button = CTkButton(button_frame, text="Check Updates", font=font, fg_color=but_col)
 
 # Buttons layout
 button_frame.pack()
-Label(button_frame, text="", font="Arial, 1", foreground=bg_col, background=bg_col).pack()
+Label(button_frame, text="", font="Arial, 2", foreground=bg_col, background=bg_col).pack()
 title.pack()
-Label(button_frame, text="", font="Arial, 11", foreground=bg_col, background=bg_col).pack()
-Label(button_frame, text="Browse Image :" + " " * 12, font="Arial, 10", foreground="white", background=bg_col).pack()
+Label(button_frame, text="", font="Arial, 5", foreground=bg_col, background=bg_col).pack()
+Label(button_frame, text="Browse Image :" + " " * 12, font="Arial, 12", foreground="white", background=bg_col).pack()
 browse_button.pack(padx=10, pady=10, ipadx=20, ipady=15)
-Label(button_frame, text="", font="Arial, 10", foreground=bg_col, background=bg_col).pack()
-Label(button_frame, text="AI Enhancers :" + " " * 13, font="Arial, 10", foreground="white", background=bg_col).pack()
+Label(button_frame, text="", font="Arial, 5", foreground=bg_col, background=bg_col).pack()
+Label(button_frame, text="AI Enhancers :" + " " * 13, font="Arial, 12", foreground="white", background=bg_col).pack()
 upscale_button.pack(padx=10, pady=10, ipadx=20, ipady=15)
 remove_bg_button.pack(padx=10, ipadx=20, ipady=15)
 colorize_button.pack(padx=10, pady=10, ipadx=20, ipady=15)
-Label(button_frame, text="", font="Arial, 11", foreground=bg_col, background=bg_col).pack()
-Label(button_frame, text="Tweak Settings :" + " " * 10, font="Arial, 10", foreground="white", background=bg_col).pack()
-settings_button.pack(padx=10, pady=3, ipadx=20)
-update_button.pack(padx=10, pady=3, ipadx=20)
+Label(button_frame, text="", font="Arial, 5", foreground=bg_col, background=bg_col).pack()
+Label(button_frame, text="Tweak Settings :" + " " * 10, font="Arial, 12", foreground="white", background=bg_col).pack()
+settings_button.pack(padx=10, pady=5, ipadx=20)
+update_button.pack(padx=10, pady=5, ipadx=20)
+Label(button_frame, text="Version: " + version, bg=bg_col, fg="#cac9c9", font=("Arial", 10)).pack(pady=15)
 
 # Canvas command
 canvas.bind("<Button-1>", load_image)

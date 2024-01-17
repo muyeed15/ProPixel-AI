@@ -4,6 +4,9 @@ from customtkinter import *
 from PIL import Image, ImageTk
 import threading
 import shutil
+import requests
+import webbrowser
+
 
 # Version
 version = "1.0.0"
@@ -13,6 +16,19 @@ try:
     shutil.rmtree("cache")
 except:
     pass
+
+# Update
+try:
+    new_version = requests.get("https://raw.githubusercontent.com/muyeed15/ProPixel-AI/main/version.txt").text
+except:
+    new_version = "null"
+
+if (new_version == version) or (new_version == "null"):
+    ver_tex = fr"v{version}"
+    ver_col = "#cac9c9"
+else:
+    ver_tex = " Updates are available! "
+    ver_col = "#ebbd34"
 
 # Config files
 # -- Upscale --
@@ -50,7 +66,7 @@ resolution = [root.winfo_screenwidth(), root.winfo_screenheight()]
 screen = [1220, 592]
 position = [int((resolution[0] - screen[0]) / 2), int((resolution[1] - screen[1]) / 2)]
 
-screen2 = [483, 235]
+screen2 = [506, 235]
 position2 = [int((resolution[0] - screen2[0]) / 2), int((resolution[1] - screen2[1]) / 2)]
 
 
@@ -216,8 +232,9 @@ def settings_func():
     Label(right_frame, text="CustomTkinter : TomSchimansky", bg=can_col, fg="#cac9c9", font=("Arial", 10)).pack(padx=5, anchor=NW)
     Label(right_frame, text="Colorful Image Colorization : richzhang", bg=can_col, fg="#cac9c9", font=("Arial", 10)).pack(padx=5, anchor=NW)
     Label(right_frame, text="Dichotomous Image Segmentation (DIS) : xuebinqin", bg=can_col, fg="#cac9c9", font=("Arial", 10)).pack(padx=5, anchor=NW)
-    Label(right_frame, text="\n"*5, bg=can_col, fg="#cac9c9", font=("Arial", 8)).pack(padx=5, anchor=NW)
-    Label(s_win, text=" " * 58 + "Version: " + version, bg=bg_col, fg="#cac9c9", font=("Arial", 10)).grid(row=1, column=1)
+    Label(right_frame, text="PyTorch implementation of a Real-ESRGAN : ai-forever", bg=can_col, fg="#cac9c9", font=("Arial", 10)).pack(padx=5, anchor=NW)
+    Label(right_frame, text="\n"*3, bg=can_col, fg="#cac9c9", font=("Arial", 8)).pack(padx=5, anchor=NW)
+    Label(s_win, text=" " * 74 + "v" + version, bg=bg_col, fg="#cac9c9", font=("Arial", 10)).grid(row=1, column=1)
 
 
 def preview(output_path):
@@ -317,7 +334,7 @@ Label(button_frame, text="", font="Arial, 5", foreground=bg_col, background=bg_c
 Label(button_frame, text="Tweak Settings :" + " " * 10, font="Arial, 12", foreground="white", background=bg_col).pack()
 settings_button.pack(padx=10, pady=5, ipadx=20)
 update_button.pack(padx=10, pady=5, ipadx=20)
-Label(button_frame, text="Version: " + version, bg=bg_col, fg="#cac9c9", font=("Arial", 10)).pack(pady=15)
+Label(button_frame, text=ver_tex, bg=bg_col, fg=ver_col, font=("Arial", 10)).pack(pady=15)
 
 # Canvas command
 canvas.bind("<Button-1>", load_image)

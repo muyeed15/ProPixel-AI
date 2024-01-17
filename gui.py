@@ -14,6 +14,24 @@ try:
 except:
     pass
 
+# Config files
+# -- Upscale --
+try:
+    up_data_c = int(open(r"config/upscale.ini", "r").read())
+    if up_data_c not in [2, 4]:
+        open(r"config/upscale.ini", "w").write(str(4))
+except:
+    open(r"config/upscale.ini", "w").write(str(4))
+
+# -- Colorize --
+try:
+    col_data_c = int(open(r"config/colorize.ini", "r").read())
+    if col_data_c not in list(range(0, 110, 10)):
+        open(r"config/colorize.ini", "w").write(str(50))
+except:
+    open(r"config/colorize.ini", "w").write(str(50))
+
+# Theme
 set_appearance_mode("light")
 set_default_color_theme("green")
 
@@ -21,6 +39,7 @@ bg_col = "#1d232a"
 can_col = "#15191e"
 but_col = "#6419e6"
 
+# data
 storage = ["", ""]
 
 # GUI (Head)
@@ -67,7 +86,9 @@ def execute_function_with_splash(function, message):
 
 
 def load_image(event):
-    file_path = filedialog.askopenfilename()
+    file_path = filedialog.askopenfilename(
+        filetypes=[("Image Files", ("*.jpg", "*.jpeg", "*.png", "*.bmp"))]
+    )
 
     if file_path:
         image_path.set(file_path)
@@ -82,8 +103,13 @@ def load_image(event):
         y_position = (576 - image.height) // 2
         canvas.create_image(x_position, y_position, anchor=NW, image=result_image)
         canvas.image = result_image
-
-    storage[0] = file_path
+    
+    if (
+        file_path != ""
+        and isinstance(file_path, str)
+        and file_path.endswith((".jpg", ".jpeg", ".png", ".bmp"))
+    ):
+        storage[0] = file_path
 
 
 def display_text():
@@ -91,19 +117,31 @@ def display_text():
 
 
 def upscale_photos():
-    if storage[0] != "":
+    if (
+        storage[0] != ""
+        and isinstance(storage[0], str)
+        and storage[0].endswith((".jpg", ".jpeg", ".png", ".bmp"))
+    ):
         from upscaler import upscale_image
-        (execute_function_with_splash(lambda: upscale_image(storage[0]), "Up-scaling Image"))
+        execute_function_with_splash(lambda: upscale_image(storage[0]), "Up-scaling Image")
 
 
 def remove_bg():
-    if storage[0] != "":
+    if (
+        storage[0] != ""
+        and isinstance(storage[0], str)
+        and storage[0].endswith((".jpg", ".jpeg", ".png", ".bmp"))
+    ):
         from remover import remove_background
         (execute_function_with_splash(lambda: remove_background(storage[0]), "Removing Background"))
 
 
 def colorize_photo():
-    if storage[0] != "":
+    if (
+        storage[0] != ""
+        and isinstance(storage[0], str)
+        and storage[0].endswith((".jpg", ".jpeg", ".png", ".bmp"))
+    ):
         from colorizer import colorize_image
         (execute_function_with_splash(lambda: colorize_image(storage[0]), "Colorizing Image"))
 
@@ -125,26 +163,46 @@ def settings_func():
     Label(left_frame, text="Settings", font=("Arial", 24), bg=bg_col, fg="white").pack(pady=10, anchor=NW)
     upscale_label = Label(left_frame, text="Upscale Factor", bg=bg_col, fg="white", font=("Arial", 12))
     upscale_label.pack(pady=5, anchor=NW)
-
+        
     def up_box_callback(choice):
-        print(choice)
+        open(fr"config/upscale.ini", "w").write(str(choice).replace("x", ""))
 
-    
+
     up_box = CTkOptionMenu(left_frame, values=["2x", "4x"], command=up_box_callback, font=("Arial", 15))
     up_box.pack(pady=10, anchor=NW, ipadx=2)
-    up_box.set("2x")
 
-    colorizing_label = Label(left_frame, text="CPL (Color)", bg=bg_col, fg="white", font=("Arial", 12))
+    try:
+        up_data = int(open(r"config/upscale.ini", "r").read())
+        if up_data in [2, 4]:
+            up_box.set(f"{up_data}x")
+        else:
+            open(r"config/upscale.ini", "w").write(str(4))
+            up_box.set("4x")
+    except:
+        open(r"config/upscale.ini", "w").write(str(4))
+        up_box.set("4x")
+
+    colorizing_label = Label(left_frame, text="Colorize Factor", bg=bg_col, fg="white", font=("Arial", 12))
     colorizing_label.pack(pady=5, anchor=NW)
 
     def col_box_callback(choice):
-        print(choice)
+        open(fr"config/colorize.ini", "w").write(str(choice))
 
-    
+
     colorizing_options = list(map(str, list(range(0, 110, 10))))
     col_box = CTkOptionMenu(left_frame, values=colorizing_options, command=col_box_callback, font=("Arial", 15))
     col_box.pack(pady=10, ipadx=2, anchor=NW)
-    col_box.set("50")
+
+    try:
+        col_data = int(open(r"config/colorize.ini", "r").read())
+        if col_data in list(range(0, 110, 10)):
+            col_box.set(f"{col_data}x")
+        else:
+            open(r"config/colorize.ini", "w").write(str(50))
+            col_box.set("50")
+    except:
+        open(r"config/colorize.ini", "w").write(str(50))
+        col_box.set("50")
 
     # Right Frame
     right_frame = Frame(s_win, bg=can_col)
@@ -206,7 +264,7 @@ def preview(output_path):
     pre_font = ("Arial", 15)
     pre_button_frame = Frame(p_win, background=bg_col)
     pre_title = Label(pre_button_frame, text="Preview" + " "*6, font="Arial, 24", foreground="white", background=bg_col)
-    pre_browse_button = CTkButton(pre_button_frame, text="Open", font=pre_font)
+    pre_browse_button = CTkButton(pre_button_frame, text="Open", font=pre_font, command=ex_open_folder)
 
     # Buttons layout
     pre_button_frame.pack()

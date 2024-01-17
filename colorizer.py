@@ -28,10 +28,18 @@ def colorize_image(image_path):
 
     # Resize
     resized = cv2.resize(lab, (224, 224))
-    cap_l = cv2.split(resized)[0]
-    cap_l -= 50
-
+    
     # Colorize
+    try:
+        col_data = int(open(r"config/colorize.ini", "r").read())
+        if col_data not in list(range(0, 110, 10)):
+            col_data = 50
+    except:
+        open(r"config/colorize.ini", "w").write(str(50))
+        col_data = 50
+
+    cap_l = cv2.split(resized)[0]
+    cap_l -= int(col_data)
     net.setInput(cv2.dnn.blobFromImage(cap_l))
     ab = net.forward()[0, :, :, :].transpose((1, 2, 0))
     ab = cv2.resize(ab, (image.shape[1], image.shape[0]))

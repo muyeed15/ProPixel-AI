@@ -19,7 +19,7 @@ def upscale_image(image_path):
         original_width, original_height = original_image.size
 
         # Calculate the new dimensions while preserving the original aspect ratio
-        max_pixels = 650
+        max_pixels = 512
         ratio = min(max_pixels / original_width, max_pixels / original_height)
         new_width = int(original_width * ratio)
         new_height = int(original_height * ratio)
@@ -36,8 +36,16 @@ def upscale_image(image_path):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
     # Scale details
-    model = RealESRGAN(device, scale=2)
-    model.load_weights(r"model/upscaler/RealESRGAN_x2.pth")
+    try:
+        up_data = int(open(r"config/upscale.ini", "r").read())
+        if up_data not in [2, 4]:
+            up_data = 4
+    except:
+        open(r"config/upscale.ini", "w").write(str(4))
+        up_data = 4
+    
+    model = RealESRGAN(device, scale=int(up_data))
+    model.load_weights(fr"model/upscaler/RealESRGAN_x{up_data}.pth")
 
     # Path
     path_to_image = fr"cache/{os.path.split(image_path)[1]}"
@@ -46,7 +54,7 @@ def upscale_image(image_path):
     # Output
     sr_image = model.predict(image)
     file_name, file_extension = os.path.splitext(os.path.split(image_path)[1])
-    output_path = os.path.split(image_path)[0] + "/" + file_name + "_ProPixel_AI_UpScl" + file_extension
+    output_path = os.path.split(image_path)[0] + "/" + file_name + fr"_ProPixel_AI_UpScl_{up_data}x" + file_extension
     sr_image.save(output_path)
 
     # Remove cache folder

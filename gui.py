@@ -18,7 +18,6 @@ except:
     pass
 
 # Update
-
 def update():
     try:
         new_version = requests.get("https://raw.githubusercontent.com/muyeed15/ProPixel-AI/main/version.txt").text

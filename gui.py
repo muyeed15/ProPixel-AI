@@ -18,16 +18,23 @@ except:
     pass
 
 # Update
-try:
-    new_version = requests.get("https://raw.githubusercontent.com/muyeed15/ProPixel-AI/main/version.txt").text
-except:
-    new_version = "null"
 
-if (new_version == version) or (new_version == "null"):
+def update():
+    try:
+        new_version = requests.get("https://raw.githubusercontent.com/muyeed15/ProPixel-AI/main/version.txt").text
+    except:
+        new_version = "null"
+    
+    return new_version
+
+
+up_version = update()
+
+if (up_version == version) or (up_version == "null"):
     ver_tex = fr"v{version}"
     ver_col = "#cac9c9"
 else:
-    ver_tex = " Updates are available! "
+    ver_tex = " Updates are available ! "
     ver_col = "#ebbd34"
 
 # Config files
@@ -66,9 +73,11 @@ resolution = [root.winfo_screenwidth(), root.winfo_screenheight()]
 screen = [1220, 592]
 position = [int((resolution[0] - screen[0]) / 2), int((resolution[1] - screen[1]) / 2)]
 
-screen2 = [506, 235]
+screen2 = [502, 262]
 position2 = [int((resolution[0] - screen2[0]) / 2), int((resolution[1] - screen2[1]) / 2)]
 
+screen3 = [300, 130]
+position3 = [int((resolution[0] - screen3[0]) / 2), int((resolution[1] - screen3[1]) / 2)]
 
 def show_splash_screen(message):
     global splash_screen
@@ -172,7 +181,7 @@ def settings_func():
     s_win.resizable(False, False)
 
     # Left Frame
-    left_frame = Frame(s_win, bg=bg_col)
+    left_frame = CTkFrame(s_win, fg_color=bg_col)
     left_frame.grid(row=0, column=0, padx=8)
 
     # Widgets in Left Frame
@@ -221,19 +230,17 @@ def settings_func():
         col_box.set("50")
 
     # Right Frame
-    right_frame = Frame(s_win, bg=can_col)
-    right_frame.grid(row=0, column=1)
+    right_frame = CTkFrame(s_win, fg_color=can_col)
+    right_frame.grid(row=0, column=1, ipady=16, pady=10)
 
     # Widgets in Right Frame
-    Label(right_frame, text=" ", bg=can_col, fg="#cac9c9", font=("Arial", 2)).pack(padx=5, anchor=NW)
-    Label(right_frame, text="Credits", bg=can_col, fg="white", font=("Arial", 24)).pack(padx=5, anchor=NW)
+    Label(right_frame, text="Credits", bg=can_col, fg="white", font=("Arial", 24)).pack(padx=5, pady=5, anchor=NW)
     Label(right_frame, text="ProPixel AI : muyeed15", bg=can_col, fg="#cac9c9", font=("Arial", 10)).pack(padx=5, anchor=NW)
     Label(right_frame, text="Real-ESRGAN : Xintao", bg=can_col, fg="#cac9c9", font=("Arial", 10)).pack(padx=5, anchor=NW)
     Label(right_frame, text="CustomTkinter : TomSchimansky", bg=can_col, fg="#cac9c9", font=("Arial", 10)).pack(padx=5, anchor=NW)
     Label(right_frame, text="Colorful Image Colorization : richzhang", bg=can_col, fg="#cac9c9", font=("Arial", 10)).pack(padx=5, anchor=NW)
     Label(right_frame, text="Dichotomous Image Segmentation (DIS) : xuebinqin", bg=can_col, fg="#cac9c9", font=("Arial", 10)).pack(padx=5, anchor=NW)
     Label(right_frame, text="PyTorch implementation of a Real-ESRGAN : ai-forever", bg=can_col, fg="#cac9c9", font=("Arial", 10)).pack(padx=5, anchor=NW)
-    Label(right_frame, text="\n"*3, bg=can_col, fg="#cac9c9", font=("Arial", 8)).pack(padx=5, anchor=NW)
     Label(s_win, text=" " * 74 + "v" + version, bg=bg_col, fg="#cac9c9", font=("Arial", 10)).grid(row=1, column=1)
 
 
@@ -292,6 +299,42 @@ def preview(output_path):
     pre_browse_button.pack(padx=10, pady=10, ipadx=20, ipady=15)
 
 
+def up_gui():
+    u_win = Toplevel(root)
+
+    u_win.title("ProPixel AI : Updates")
+    u_win.config(bg=bg_col)
+
+    def web_link():
+        webbrowser.open_new_tab("https://sourceforge.net/")
+        root.destroy()
+    
+    up_b = CTkButton(u_win, text="Update", font=("Arial", 12), command=web_link)
+    
+    up_v = update()
+    
+    if (up_v == version):
+        ver_d = "You are up to date !"
+        ver_c = "white"
+        up_b.configure(state=DISABLED, fg_color=bg_col, text=f"v{version}")
+        
+    elif (up_v == "null"):
+        ver_d = "No Internet !"
+        ver_c = "white"
+        up_b.configure(state=DISABLED, fg_color=bg_col, text=f"v{version}")
+        
+    else:
+        ver_d = "Updates are available !"
+        ver_c = "#ebbd34"
+        
+    Label(u_win, text=ver_d, background=bg_col, foreground=ver_c, font=("Arial", 18)).pack(pady=22)
+
+    up_b.pack()
+
+    u_win.geometry(f"{screen3[0]}x{screen3[1]}+{position3[0]}+{position3[1]}")
+    u_win.resizable(False, False)
+
+
 # GUI (Tail)
 root.title("ProPixel AI")
 root.config(bg=bg_col)
@@ -316,7 +359,7 @@ upscale_button = CTkButton(button_frame, text="Upscale Image", font=font, fg_col
 remove_bg_button = CTkButton(button_frame, text="Remove Background", font=font, fg_color=but_col, command=remove_bg)
 colorize_button = CTkButton(button_frame, text="Colorize B&W Image", font=font, fg_color=but_col, command=colorize_photo)
 settings_button = CTkButton(button_frame, text="Settings", font=font, command=settings_func, fg_color=but_col)
-update_button = CTkButton(button_frame, text="Check Updates", font=font, fg_color=but_col)
+update_button = CTkButton(button_frame, text="Check Updates", font=font, fg_color=but_col, command=up_gui)
 
 # Buttons layout
 button_frame.pack()

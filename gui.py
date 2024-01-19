@@ -79,12 +79,14 @@ storage = ["", ""]
 # GUI (Head)
 root = CTk()
 
+root.iconbitmap(r"resource/ProPixel-AI.ico")
+
 resolution = [root.winfo_screenwidth(), root.winfo_screenheight()]
 
-screen = [1220, 592]
+screen = [1220, 550]
 position = [int((resolution[0] - screen[0]) / 2), int((resolution[1] - screen[1]) / 2)]
 
-screen2 = [501, 310]
+screen2 = [501, 303]
 position2 = [int((resolution[0] - screen2[0]) / 2), int((resolution[1] - screen2[1]) / 2)]
 
 screen3 = [300, 130]
@@ -94,7 +96,7 @@ def show_splash_screen(message):
     global splash_screen
     
     splash_screen = Toplevel(root)
-    
+    splash_screen.iconbitmap(r"resource/ProPixel-AI.ico")
     splash_width = 300
     splash_height = 60
     x_position = int((resolution[0] - splash_width) / 2)
@@ -123,27 +125,27 @@ def execute_function_with_splash(function, message):
 
 def load_image(event):
     file_path = filedialog.askopenfilename(
-        filetypes=[("Image Files", ("*.jpg", "*.jpeg", "*.png", "*.bmp"))]
+        filetypes=[("Image Files", ("*.jpg", "*.jpeg", "*.png", "*.bmp", "*.webp"))]
     )
 
     if file_path:
         image_path.set(file_path)
         image = Image.open(file_path)
 
-        image.thumbnail((1024, 576))
+        image.thumbnail((1022, 530))
         result_image = ImageTk.PhotoImage(image=image)
 
         canvas.delete("all")
 
-        x_position = (1024 - image.width) // 2
-        y_position = (576 - image.height) // 2
+        x_position = (1022 - image.width) // 2
+        y_position = (530 - image.height) // 2
         canvas.create_image(x_position, y_position, anchor=NW, image=result_image)
         canvas.image = result_image
     
     if (
         file_path != ""
         and isinstance(file_path, str)
-        and file_path.endswith((".jpg", ".jpeg", ".png", ".bmp"))
+        and file_path.endswith((".jpg", ".jpeg", ".png", ".bmp", ".webp"))
     ):
         storage[0] = file_path
 
@@ -156,17 +158,17 @@ def upscale_photos():
     if (
         storage[0] != ""
         and isinstance(storage[0], str)
-        and storage[0].endswith((".jpg", ".jpeg", ".png", ".bmp"))
+        and storage[0].endswith((".jpg", ".jpeg", ".png", ".bmp", ".webp"))
     ):
         from upscaler import upscale_image
-        execute_function_with_splash(lambda: upscale_image(storage[0]), "Up-scaling Image")
+        execute_function_with_splash(lambda: upscale_image(storage[0]), "Upscaling Image")
 
 
 def remove_bg():
     if (
         storage[0] != ""
         and isinstance(storage[0], str)
-        and storage[0].endswith((".jpg", ".jpeg", ".png", ".bmp"))
+        and storage[0].endswith((".jpg", ".jpeg", ".png", ".bmp", ".webp"))
     ):
         from remover import remove_background
         (execute_function_with_splash(lambda: remove_background(storage[0]), "Removing Background"))
@@ -176,7 +178,7 @@ def colorize_photo():
     if (
         storage[0] != ""
         and isinstance(storage[0], str)
-        and storage[0].endswith((".jpg", ".jpeg", ".png", ".bmp"))
+        and storage[0].endswith((".jpg", ".jpeg", ".png", ".bmp", ".webp"))
     ):
         from colorizer import colorize_image
         (execute_function_with_splash(lambda: colorize_image(storage[0]), "Colorizing Image"))
@@ -184,6 +186,8 @@ def colorize_photo():
 
 def settings_func():
     s_win = Toplevel(root)
+    
+    s_win.iconbitmap(r"resource/ProPixel-AI.ico")
     
     s_win.title("ProPixel AI : Settings")
     s_win.config(bg=bg_col)
@@ -197,13 +201,13 @@ def settings_func():
 
     # Widgets in Left Frame
     Label(left_frame, text="Settings", font=("Arial", 24), bg=bg_col, fg="white").pack(pady=10, anchor=NW)
-    upscale_label = Label(left_frame, text="Upscale Factor", bg=bg_col, fg="white", font=("Arial", 12))
+    upscale_label = Label(left_frame, text="Upscale Factor", bg=bg_col, fg="white", font=("Arial", 10))
     upscale_label.pack(pady=5, anchor=NW)
 
     def up_box_callback(choice):
         open(fr"config/upscale.ini", "w").write(str(choice).replace("x", ""))
 
-    up_box = CTkOptionMenu(left_frame, values=["2x", "4x"], command=up_box_callback, font=("Arial", 15))
+    up_box = CTkOptionMenu(left_frame, values=["2x", "4x"], command=up_box_callback, font=("Arial", 12))
     up_box.pack(pady=10, anchor=NW, ipadx=2)
 
     try:
@@ -218,7 +222,7 @@ def settings_func():
         up_box.set("4x")
 
     # Edge Factor
-    edge_label = Label(left_frame, text="Edge Factor", bg=bg_col, fg="white", font=("Arial", 12))
+    edge_label = Label(left_frame, text="Edge Factor", bg=bg_col, fg="white", font=("Arial", 10))
     edge_label.pack(pady=5, anchor=NW)
 
     def edge_box_callback(choice):
@@ -227,27 +231,31 @@ def settings_func():
         open(fr"config/edge.ini", "w").write(str(factor))
 
     edge_options = ["Sharp", "Smooth", "Smoothest"]
-    edge_box = CTkOptionMenu(left_frame, values=edge_options, command=edge_box_callback, font=("Arial", 15))
+    edge_box = CTkOptionMenu(left_frame, values=edge_options, command=edge_box_callback, font=("Arial", 12))
     edge_box.pack(pady=10, ipadx=2, anchor=NW)
 
     try:
         edge_data = int(open(r"config/edge.ini", "r").read())
-        factor_mapping = {1: "Sharp", 2: "Smooth", 3: "Smoothest"}
-        selected_factor = factor_mapping.get(edge_data, "Smooth")
-        edge_box.set(selected_factor)
+        if edge_data in [1, 2, 3]:
+            factor_mapping = {1: "Sharp", 2: "Smooth", 3: "Smoothest"}
+            selected_factor = factor_mapping.get(edge_data, "Smooth")
+            edge_box.set(selected_factor)
+        else:
+            open(r"config/edge.ini", "w").write(str(2))
+            edge_box.set("Smooth")
     except:
         open(r"config/edge.ini", "w").write(str(2))
         edge_box.set("Smooth")
 
     # Colorize Factor
-    colorizing_label = Label(left_frame, text="Colorize Factor", bg=bg_col, fg="white", font=("Arial", 12))
+    colorizing_label = Label(left_frame, text="Colorize Factor", bg=bg_col, fg="white", font=("Arial", 10))
     colorizing_label.pack(pady=5, anchor=NW)
 
     def col_box_callback(choice):
         open(fr"config/colorize.ini", "w").write(str(choice))
 
     colorizing_options = list(map(str, list(range(0, 110, 10))))
-    col_box = CTkOptionMenu(left_frame, values=colorizing_options, command=col_box_callback, font=("Arial", 15))
+    col_box = CTkOptionMenu(left_frame, values=colorizing_options, command=col_box_callback, font=("Arial", 12))
     col_box.pack(pady=10, ipadx=2, anchor=NW)
 
     try:
@@ -264,7 +272,7 @@ def settings_func():
 
     # Right Frame
     right_frame = CTkFrame(s_win, fg_color=can_col)
-    right_frame.grid(row=0, column=1, ipady=57, pady=10)
+    right_frame.grid(row=0, column=1, ipady=53, pady=10)
 
     # Widgets in Right Frame
     Label(right_frame, text="Credits", bg=can_col, fg="white", font=("Arial", 24)).pack(padx=5, pady=2, anchor=NW)
@@ -294,6 +302,7 @@ def preview(output_path):
 
 
     p_win = Toplevel(root)
+    p_win.iconbitmap(r"resource/ProPixel-AI.ico")
     p_win.title("ProPixel AI : Preview")
     p_win.config(bg=bg_col)
     p_win.geometry(f"{screen[0]}x{screen[1]}+{position[0]}+{position[1]}")
@@ -302,22 +311,22 @@ def preview(output_path):
     preview_path = StringVar()
 
     Label(p_win, text=" ", font="Arial, 10", foreground=bg_col, background=bg_col).pack(side=RIGHT)
-    out_canvas = Canvas(p_win, width=1024, height=576, bd=0, highlightthickness=0, relief='ridge')
+    out_canvas = Canvas(p_win, width=1022, height=530, bd=0, highlightthickness=0, relief='ridge')
     out_canvas.configure(bg=can_col)
 
     preview_path.set(output_path)
     image = Image.open(output_path)
-    image.thumbnail((1024, 576))
+    image.thumbnail((1022, 530))
     result_image = ImageTk.PhotoImage(image=image)
 
-    x_position = (1024 - image.width) // 2
-    y_position = (576 - image.height) // 2
+    x_position = (1022 - image.width) // 2
+    y_position = (530 - image.height) // 2
     out_canvas.create_image(x_position, y_position, anchor=NW, image=result_image)
     out_canvas.image = result_image
     out_canvas.pack(side=RIGHT)
 
     # Buttons
-    pre_font = ("Arial", 15)
+    pre_font = ("Arial", 12)
     pre_button_frame = Frame(p_win, background=bg_col)
     pre_title = Label(pre_button_frame, text="Preview" + " "*6, font="Arial, 24", foreground="white", background=bg_col)
     pre_browse_button = CTkButton(pre_button_frame, text="Open", font=pre_font, command=ex_open_folder)
@@ -327,13 +336,13 @@ def preview(output_path):
     Label(pre_button_frame, text="", font="Arial, 2", foreground=bg_col, background=bg_col).pack()
     pre_title.pack()
     Label(pre_button_frame, text="", font="Arial, 5", foreground=bg_col, background=bg_col).pack()
-    Label(pre_button_frame, text="Open Folder :" + " " * 15, font="Arial, 12", foreground="white", background=bg_col).pack()
+    Label(pre_button_frame, text="Open Folder :" + " " * 21, font="Arial, 10", foreground="white", background=bg_col).pack()
     pre_browse_button.pack(padx=10, pady=10, ipadx=20, ipady=15)
 
 
 def up_gui():
     u_win = Toplevel(root)
-
+    u_win.iconbitmap(r"resource/ProPixel-AI.ico")
     u_win.title("ProPixel AI : Updates")
     u_win.config(bg=bg_col)
 
@@ -376,15 +385,14 @@ root.resizable(False, False)
 
 image_path = StringVar()
 Label(root, text=" ", font="Arial, 10", foreground=bg_col, background=bg_col).pack(side=RIGHT)
-canvas = Canvas(root, width=1024, height=576, bd=0, highlightthickness=0, relief='ridge')
+canvas = Canvas(root, width=1022, height=530, bd=0, highlightthickness=0, relief='ridge')
 canvas.configure(bg=can_col)
 canvas.pack(side=RIGHT)
 display_text()
 
 # Buttons
-font = ("Arial", 15)
+font = ("Arial", 12)
 button_frame = Frame(root, background=bg_col)
-title = Label(button_frame, text="ProPixel AI", font="Arial, 24", foreground="white", background=bg_col)
 browse_button = CTkButton(button_frame, text="Browse", font=font)
 browse_button.bind("<Button-1>", load_image)
 upscale_button = CTkButton(button_frame, text="Upscale Image", font=font, fg_color=but_col, command=upscale_photos)
@@ -396,20 +404,25 @@ update_button = CTkButton(button_frame, text="Check Updates", font=font, fg_colo
 # Buttons layout
 button_frame.pack()
 Label(button_frame, text="", font="Arial, 2", foreground=bg_col, background=bg_col).pack()
-title.pack()
+
+img_path = r"resource/ProPixel-AI.png"
+org_image = Image.open(img_path).resize((170, 19))
+tk_image = ImageTk.PhotoImage(org_image)
+
+Label(button_frame, image=tk_image, foreground=bg_col, background=bg_col).pack()
 Label(button_frame, text="", font="Arial, 5", foreground=bg_col, background=bg_col).pack()
-Label(button_frame, text="Browse Image :" + " " * 12, font="Arial, 12", foreground="white", background=bg_col).pack()
+Label(button_frame, text="Browse Image :" + " " * 19, font="Arial, 10", foreground="white", background=bg_col).pack()
 browse_button.pack(padx=10, pady=10, ipadx=20, ipady=15)
 Label(button_frame, text="", font="Arial, 5", foreground=bg_col, background=bg_col).pack()
-Label(button_frame, text="AI Enhancers :" + " " * 13, font="Arial, 12", foreground="white", background=bg_col).pack()
+Label(button_frame, text="AI Enhancers :" + " " * 19, font="Arial, 10", foreground="white", background=bg_col).pack()
 upscale_button.pack(padx=10, pady=10, ipadx=20, ipady=15)
 remove_bg_button.pack(padx=10, ipadx=20, ipady=15)
 colorize_button.pack(padx=10, pady=10, ipadx=20, ipady=15)
 Label(button_frame, text="", font="Arial, 5", foreground=bg_col, background=bg_col).pack()
-Label(button_frame, text="Tweak Settings :" + " " * 10, font="Arial, 12", foreground="white", background=bg_col).pack()
+Label(button_frame, text="Tweak Settings :" + " " * 16, font="Arial, 10", foreground="white", background=bg_col).pack()
 settings_button.pack(padx=10, pady=5, ipadx=20)
 update_button.pack(padx=10, pady=5, ipadx=20)
-Label(button_frame, text=ver_tex, bg=bg_col, fg=ver_col, font=("Arial", 10)).pack(pady=15)
+Label(button_frame, text=ver_tex, bg=bg_col, fg=ver_col, font=("Arial", 9)).pack(pady=17)
 
 # Canvas command
 canvas.bind("<Button-1>", load_image)

@@ -36,6 +36,10 @@ else:
     ver_tex = " Updates are available ! "
     ver_col = "#ebbd34"
 
+# Config folder
+if os.path.exists("config") == False:
+    os.makedirs("config")
+
 # Config files
 # -- Upscale --
 try:
@@ -52,6 +56,14 @@ try:
         open(r"config/colorize.ini", "w").write(str(50))
 except:
     open(r"config/colorize.ini", "w").write(str(50))
+
+# -- Edge --
+try:
+    edge_data_c = int(open(r"config/edge.ini", "r").read())
+    if edge_data_c not in [1, 2, 3]:
+        open(r"config/edge.ini", "w").write(str(2))
+except:
+    open(r"config/edge.ini", "w").write(str(2))
 
 # Theme
 set_appearance_mode("light")
@@ -72,7 +84,7 @@ resolution = [root.winfo_screenwidth(), root.winfo_screenheight()]
 screen = [1220, 592]
 position = [int((resolution[0] - screen[0]) / 2), int((resolution[1] - screen[1]) / 2)]
 
-screen2 = [502, 262]
+screen2 = [501, 310]
 position2 = [int((resolution[0] - screen2[0]) / 2), int((resolution[1] - screen2[1]) / 2)]
 
 screen3 = [300, 130]
@@ -187,10 +199,9 @@ def settings_func():
     Label(left_frame, text="Settings", font=("Arial", 24), bg=bg_col, fg="white").pack(pady=10, anchor=NW)
     upscale_label = Label(left_frame, text="Upscale Factor", bg=bg_col, fg="white", font=("Arial", 12))
     upscale_label.pack(pady=5, anchor=NW)
-        
+
     def up_box_callback(choice):
         open(fr"config/upscale.ini", "w").write(str(choice).replace("x", ""))
-
 
     up_box = CTkOptionMenu(left_frame, values=["2x", "4x"], command=up_box_callback, font=("Arial", 15))
     up_box.pack(pady=10, anchor=NW, ipadx=2)
@@ -206,12 +217,34 @@ def settings_func():
         open(r"config/upscale.ini", "w").write(str(4))
         up_box.set("4x")
 
+    # Edge Factor
+    edge_label = Label(left_frame, text="Edge Factor", bg=bg_col, fg="white", font=("Arial", 12))
+    edge_label.pack(pady=5, anchor=NW)
+
+    def edge_box_callback(choice):
+        edge_mapping = {"Sharp": 1, "Smooth": 2, "Smoothest": 3}
+        factor = edge_mapping.get(choice, 2)
+        open(fr"config/edge.ini", "w").write(str(factor))
+
+    edge_options = ["Sharp", "Smooth", "Smoothest"]
+    edge_box = CTkOptionMenu(left_frame, values=edge_options, command=edge_box_callback, font=("Arial", 15))
+    edge_box.pack(pady=10, ipadx=2, anchor=NW)
+
+    try:
+        edge_data = int(open(r"config/edge.ini", "r").read())
+        factor_mapping = {1: "Sharp", 2: "Smooth", 3: "Smoothest"}
+        selected_factor = factor_mapping.get(edge_data, "Smooth")
+        edge_box.set(selected_factor)
+    except:
+        open(r"config/edge.ini", "w").write(str(2))
+        edge_box.set("Smooth")
+
+    # Colorize Factor
     colorizing_label = Label(left_frame, text="Colorize Factor", bg=bg_col, fg="white", font=("Arial", 12))
     colorizing_label.pack(pady=5, anchor=NW)
 
     def col_box_callback(choice):
         open(fr"config/colorize.ini", "w").write(str(choice))
-
 
     colorizing_options = list(map(str, list(range(0, 110, 10))))
     col_box = CTkOptionMenu(left_frame, values=colorizing_options, command=col_box_callback, font=("Arial", 15))
@@ -220,7 +253,7 @@ def settings_func():
     try:
         col_data = int(open(r"config/colorize.ini", "r").read())
         if col_data in list(range(0, 110, 10)):
-            col_box.set(f"{col_data}x")
+            col_box.set(f"{col_data}")
         else:
             open(r"config/colorize.ini", "w").write(str(50))
             col_box.set("50")
@@ -228,19 +261,19 @@ def settings_func():
         open(r"config/colorize.ini", "w").write(str(50))
         col_box.set("50")
 
+
     # Right Frame
     right_frame = CTkFrame(s_win, fg_color=can_col)
-    right_frame.grid(row=0, column=1, ipady=16, pady=10)
+    right_frame.grid(row=0, column=1, ipady=57, pady=10)
 
     # Widgets in Right Frame
-    Label(right_frame, text="Credits", bg=can_col, fg="white", font=("Arial", 24)).pack(padx=5, pady=5, anchor=NW)
+    Label(right_frame, text="Credits", bg=can_col, fg="white", font=("Arial", 24)).pack(padx=5, pady=2, anchor=NW)
     Label(right_frame, text="ProPixel AI : muyeed15", bg=can_col, fg="#cac9c9", font=("Arial", 10)).pack(padx=5, anchor=NW)
     Label(right_frame, text="Real-ESRGAN : Xintao", bg=can_col, fg="#cac9c9", font=("Arial", 10)).pack(padx=5, anchor=NW)
     Label(right_frame, text="CustomTkinter : TomSchimansky", bg=can_col, fg="#cac9c9", font=("Arial", 10)).pack(padx=5, anchor=NW)
     Label(right_frame, text="Colorful Image Colorization : richzhang", bg=can_col, fg="#cac9c9", font=("Arial", 10)).pack(padx=5, anchor=NW)
     Label(right_frame, text="Dichotomous Image Segmentation (DIS) : xuebinqin", bg=can_col, fg="#cac9c9", font=("Arial", 10)).pack(padx=5, anchor=NW)
     Label(right_frame, text="PyTorch implementation of a Real-ESRGAN : ai-forever", bg=can_col, fg="#cac9c9", font=("Arial", 10)).pack(padx=5, anchor=NW)
-    Label(s_win, text=" " * 74 + "v" + version, bg=bg_col, fg="#cac9c9", font=("Arial", 10)).grid(row=1, column=1)
 
 
 def preview(output_path):

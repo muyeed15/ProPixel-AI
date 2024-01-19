@@ -7,6 +7,10 @@ import onnxruntime
 
 # Remove background
 def remove_background(image_path):
+    # Config folder
+    if os.path.exists("config") == False:
+        os.makedirs("config")
+    
     # Model
     model_path = r"model/remover/isnet-general-use.onnx"
 
@@ -50,6 +54,25 @@ def remove_background(image_path):
 
     # Apply the mask to the alpha channel
     result_image[:, :, 3] = mask * 255
+
+    # Add feather effect to the edges
+    try:
+        ed_data = int(open(r"config/edge.ini", "r").read())
+        if ed_data not in [1, 2, 3]:
+            ed_data = 2
+    except:
+        open(r"config/edge.ini", "w").write(str(2))
+        ed_data = 2
+    
+    # Ensure it is a positive odd number    
+    if ed_data == 1:
+        feather_amount = 1
+    elif ed_data == 2:
+        feather_amount = 17
+    elif ed_data == 3:
+        feather_amount = 35
+    
+    result_image[:, :, 3] = cv2.GaussianBlur(result_image[:, :, 3], (feather_amount, feather_amount), 0)
 
     # Save the result with transparency
     cv2.imwrite(output_path, result_image)

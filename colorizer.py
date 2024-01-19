@@ -6,6 +6,10 @@ import os
 
 # Colorize function
 def colorize_image(image_path):
+    # Config folder
+    if os.path.exists("config") == False:
+        os.makedirs("config")
+    
     mod_pro = r"model/colorizer/colorization_deploy_v2.prototxt"
     mod_pts = r"model/colorizer/pts_in_hull.npy"
     mod_caf = r"model/colorizer/colorization_release_v2.caffemodel"

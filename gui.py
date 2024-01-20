@@ -93,7 +93,7 @@ except:
     scaleFactor = 1.0
 
 if scaleFactor == 1.25:
-    posx = 180
+    posx = 175
     posy = 95
     
     screen = [1220, 620]
@@ -109,6 +109,8 @@ if scaleFactor == 1.25:
 
     screen5 = [300, 60]
     position5 = [int((resolution[0] - screen5[0]) / 2) + posx, int((resolution[1] - screen5[1]) / 2) + posy]
+    
+    screen6 = [512, 300]
     
     set_pad = 68
 
@@ -130,6 +132,8 @@ elif scaleFactor == 1.5:
     screen5 = [300, 60]
     position5 = [int((resolution[0] - screen5[0]) / 2) + posx, int((resolution[1] - screen5[1]) / 2) + posy]
     
+    screen6 = [512, 322]
+    
     set_pad = 83
 
 elif scaleFactor == 1.75:
@@ -150,6 +154,8 @@ elif scaleFactor == 1.75:
     screen5 = [300, 60]
     position5 = [int((resolution[0] - screen5[0]) / 2) + posx, int((resolution[1] - screen5[1]) / 2) + posy]
     
+    screen6 = [502, 360]
+    
     set_pad = 100
 
 else:
@@ -169,6 +175,8 @@ else:
 
     screen5 = [300, 60]
     position5 = [int((resolution[0] - screen5[0]) / 2) + posx, int((resolution[1] - screen5[1]) / 2) + posy]
+    
+    screen6 = [512, 265]
     
     set_pad = 53
 
@@ -230,7 +238,7 @@ def load_image(event):
 
 
 def display_text():
-    canvas.create_text(512, 288, text="Click here to load image", font=("Arial", 10), fill="#cac9c9")
+    canvas.create_text(screen6[0], screen6[1], text="Click here to load image", font=("Arial", 10), fill="#cac9c9")
 
 
 # Operations

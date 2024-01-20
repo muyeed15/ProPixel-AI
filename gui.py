@@ -6,6 +6,8 @@ import threading
 import shutil
 import requests
 import webbrowser
+from hdpitkinter import HdpiTk
+import ctypes
 
 
 # Version
@@ -20,11 +22,9 @@ except:
 # Update
 def update():
     try:
-        new_version = requests.get("https://raw.githubusercontent.com/muyeed15/ProPixel-AI/main/version.txt").text
+        return requests.get("https://raw.githubusercontent.com/muyeed15/ProPixel-AI/main/version.txt").text
     except:
-        new_version = "null"
-    
-    return new_version
+        return "null"
 
 
 up_version = update()
@@ -65,6 +65,9 @@ try:
 except:
     open(r"config/edge.ini", "w").write(str(2))
 
+# Supported files
+s_files = [".jpg", ".jpeg", ".png", ".bmp", ".webp"]
+
 # Theme
 set_appearance_mode("light")
 set_default_color_theme("green")
@@ -73,35 +76,110 @@ bg_col = "#1d232a"
 can_col = "#15191e"
 but_col = "#6419e6"
 
-# data
+# Data
 storage = ["", ""]
 
 # GUI (Head)
-root = CTk()
+root = HdpiTk()
 
 root.iconbitmap(r"resource/ProPixel-AI.ico")
 
+# Resolution
 resolution = [root.winfo_screenwidth(), root.winfo_screenheight()]
 
-screen = [1220, 550]
-position = [int((resolution[0] - screen[0]) / 2), int((resolution[1] - screen[1]) / 2)]
+try:
+    scaleFactor = ctypes.windll.shcore.GetScaleFactorForDevice(0) / 100
+except:
+    scaleFactor = 1.0
 
-screen2 = [501, 303]
-position2 = [int((resolution[0] - screen2[0]) / 2), int((resolution[1] - screen2[1]) / 2)]
+if scaleFactor == 1.25:
+    posx = 180
+    posy = 95
+    
+    screen = [1220, 620]
+    position = [int((resolution[0] - screen[0]) / 2) + posx, int((resolution[1] - screen[1]) / 2) + posy]
 
-screen3 = [300, 130]
-position3 = [int((resolution[0] - screen3[0]) / 2), int((resolution[1] - screen3[1]) / 2)]
+    screen2 = [540, 335]
+    position2 = [int((resolution[0] - screen2[0]) / 2) + posx, int((resolution[1] - screen2[1]) / 2) + posy]
 
+    screen3 = [300, 130]
+    position3 = [int((resolution[0] - screen3[0]) / 2) + posx, int((resolution[1] - screen3[1]) / 2) + posy]
+
+    screen4 = [1022, 600]
+
+    screen5 = [300, 60]
+    position5 = [int((resolution[0] - screen5[0]) / 2) + posx, int((resolution[1] - screen5[1]) / 2) + posy]
+    
+    set_pad = 68
+
+elif scaleFactor == 1.5:
+    posx = 300
+    posy = 170
+
+    screen = [1220, 675]
+    position = [int((resolution[0] - screen[0]) / 2) + posx, int((resolution[1] - screen[1]) / 2) + posy]
+
+    screen2 = [580, 370]
+    position2 = [int((resolution[0] - screen2[0]) / 2) + posx, int((resolution[1] - screen2[1]) / 2) + posy]
+
+    screen3 = [300, 130]
+    position3 = [int((resolution[0] - screen3[0]) / 2) + posx, int((resolution[1] - screen3[1]) / 2) + posy]
+
+    screen4 = [1022, 655]
+
+    screen5 = [300, 60]
+    position5 = [int((resolution[0] - screen5[0]) / 2) + posx, int((resolution[1] - screen5[1]) / 2) + posy]
+    
+    set_pad = 83
+
+elif scaleFactor == 1.75:
+    posx = 380
+    posy = 185
+
+    screen = [1232, 750]
+    position = [int((resolution[0] - screen[0]) / 2) + posx, int((resolution[1] - screen[1]) / 2) + posy]
+
+    screen2 = [620, 410]
+    position2 = [int((resolution[0] - screen2[0]) / 2) + posx, int((resolution[1] - screen2[1]) / 2) + posy]
+
+    screen3 = [300, 130]
+    position3 = [int((resolution[0] - screen3[0]) / 2) + posx, int((resolution[1] - screen3[1]) / 2) + posy]
+
+    screen4 = [1022, 730]
+
+    screen5 = [300, 60]
+    position5 = [int((resolution[0] - screen5[0]) / 2) + posx, int((resolution[1] - screen5[1]) / 2) + posy]
+    
+    set_pad = 100
+
+else:
+    posx = 0
+    posy = 0
+    
+    screen = [1220, 550]
+    position = [int((resolution[0] - screen[0]) / 2) + posx, int((resolution[1] - screen[1]) / 2) + posy]
+
+    screen2 = [501, 303]
+    position2 = [int((resolution[0] - screen2[0]) / 2) + posx, int((resolution[1] - screen2[1]) / 2) + posy]
+
+    screen3 = [300, 130]
+    position3 = [int((resolution[0] - screen3[0]) / 2) + posx, int((resolution[1] - screen3[1]) / 2) + posy]
+
+    screen4 = [1022, 530]
+
+    screen5 = [300, 60]
+    position5 = [int((resolution[0] - screen5[0]) / 2) + posx, int((resolution[1] - screen5[1]) / 2) + posy]
+    
+    set_pad = 53
+
+
+# Splash screen
 def show_splash_screen(message):
     global splash_screen
     
     splash_screen = Toplevel(root)
     splash_screen.iconbitmap(r"resource/ProPixel-AI.ico")
-    splash_width = 300
-    splash_height = 60
-    x_position = int((resolution[0] - splash_width) / 2)
-    y_position = int((resolution[1] - splash_height) / 2)
-    splash_screen.geometry(f"{splash_width}x{splash_height}+{x_position}+{y_position}")
+    splash_screen.geometry(f"{screen5[0]}x{screen5[1]}+{position5[0]}+{position5[1]}")
     
     splash_screen.title("Processing")
     splash_screen.configure(bg=bg_col)
@@ -123,29 +201,30 @@ def execute_function_with_splash(function, message):
     threading.Thread(target=execute_and_close_splash).start()
 
 
+# Canvas elements
 def load_image(event):
     file_path = filedialog.askopenfilename(
-        filetypes=[("Image Files", ("*.jpg", "*.jpeg", "*.png", "*.bmp", "*.webp"))]
+        filetypes=[("Image Files", tuple(["*" + item for item in s_files]))]
     )
 
     if file_path:
         image_path.set(file_path)
         image = Image.open(file_path)
 
-        image.thumbnail((1022, 530))
+        image.thumbnail((screen4[0], screen4[1]))
         result_image = ImageTk.PhotoImage(image=image)
 
         canvas.delete("all")
 
-        x_position = (1022 - image.width) // 2
-        y_position = (530 - image.height) // 2
+        x_position = (screen4[0] - image.width) // 2
+        y_position = (screen4[1] - image.height) // 2
         canvas.create_image(x_position, y_position, anchor=NW, image=result_image)
         canvas.image = result_image
     
     if (
         file_path != ""
         and isinstance(file_path, str)
-        and file_path.endswith((".jpg", ".jpeg", ".png", ".bmp", ".webp"))
+        and file_path.endswith(tuple(s_files))
     ):
         storage[0] = file_path
 
@@ -154,11 +233,12 @@ def display_text():
     canvas.create_text(512, 288, text="Click here to load image", font=("Arial", 10), fill="#cac9c9")
 
 
+# Operations
 def upscale_photos():
     if (
         storage[0] != ""
         and isinstance(storage[0], str)
-        and storage[0].endswith((".jpg", ".jpeg", ".png", ".bmp", ".webp"))
+        and storage[0].endswith(tuple(s_files))
     ):
         from upscaler import upscale_image
         execute_function_with_splash(lambda: upscale_image(storage[0]), "Upscaling Image")
@@ -168,7 +248,7 @@ def remove_bg():
     if (
         storage[0] != ""
         and isinstance(storage[0], str)
-        and storage[0].endswith((".jpg", ".jpeg", ".png", ".bmp", ".webp"))
+        and storage[0].endswith(tuple(s_files))
     ):
         from remover import remove_background
         (execute_function_with_splash(lambda: remove_background(storage[0]), "Removing Background"))
@@ -178,12 +258,13 @@ def colorize_photo():
     if (
         storage[0] != ""
         and isinstance(storage[0], str)
-        and storage[0].endswith((".jpg", ".jpeg", ".png", ".bmp", ".webp"))
+        and storage[0].endswith(tuple(s_files))
     ):
         from colorizer import colorize_image
         (execute_function_with_splash(lambda: colorize_image(storage[0]), "Colorizing Image"))
 
 
+# Settings
 def settings_func():
     s_win = Toplevel(root)
     
@@ -272,7 +353,7 @@ def settings_func():
 
     # Right Frame
     right_frame = CTkFrame(s_win, fg_color=can_col)
-    right_frame.grid(row=0, column=1, ipady=53, pady=10)
+    right_frame.grid(row=0, column=1, ipady=set_pad, pady=10)
 
     # Widgets in Right Frame
     Label(right_frame, text="Credits", bg=can_col, fg="white", font=("Arial", 24)).pack(padx=5, pady=2, anchor=NW)
@@ -284,23 +365,18 @@ def settings_func():
     Label(right_frame, text="PyTorch implementation of a Real-ESRGAN : ai-forever", bg=can_col, fg="#cac9c9", font=("Arial", 10)).pack(padx=5, anchor=NW)
 
 
+# Preview output
 def preview(output_path):
+    # Open output
     def open_folder(path):
-        try:
-            if sys.platform.startswith('win'):
-                os.startfile(path)
-            elif sys.platform.startswith('darwin'):
-                os.system('open "{}"'.format(path))
-            elif sys.platform.startswith('linux'):
-                os.system('xdg-open "{}"'.format(path))
-        except:
-            pass
+        os.startfile(path)
 
 
     def ex_open_folder():
         open_folder(os.path.split(storage[0])[0])
 
 
+    # Preview
     p_win = Toplevel(root)
     p_win.iconbitmap(r"resource/ProPixel-AI.ico")
     p_win.title("ProPixel AI : Preview")
@@ -311,16 +387,16 @@ def preview(output_path):
     preview_path = StringVar()
 
     Label(p_win, text=" ", font="Arial, 10", foreground=bg_col, background=bg_col).pack(side=RIGHT)
-    out_canvas = Canvas(p_win, width=1022, height=530, bd=0, highlightthickness=0, relief='ridge')
+    out_canvas = Canvas(p_win, width=screen4[0], height=screen4[1], bd=0, highlightthickness=0, relief='ridge')
     out_canvas.configure(bg=can_col)
 
     preview_path.set(output_path)
     image = Image.open(output_path)
-    image.thumbnail((1022, 530))
+    image.thumbnail((screen4[0], screen4[1]))
     result_image = ImageTk.PhotoImage(image=image)
 
-    x_position = (1022 - image.width) // 2
-    y_position = (530 - image.height) // 2
+    x_position = (screen4[0] - image.width) // 2
+    y_position = (screen4[1] - image.height) // 2
     out_canvas.create_image(x_position, y_position, anchor=NW, image=result_image)
     out_canvas.image = result_image
     out_canvas.pack(side=RIGHT)
@@ -328,7 +404,7 @@ def preview(output_path):
     # Buttons
     pre_font = ("Arial", 12)
     pre_button_frame = Frame(p_win, background=bg_col)
-    pre_title = Label(pre_button_frame, text="Preview" + " "*6, font="Arial, 24", foreground="white", background=bg_col)
+    pre_title = Label(pre_button_frame, text="Preview" + " "*5, font="Arial, 24", foreground="white", background=bg_col)
     pre_browse_button = CTkButton(pre_button_frame, text="Open", font=pre_font, command=ex_open_folder)
 
     # Buttons layout
@@ -336,10 +412,11 @@ def preview(output_path):
     Label(pre_button_frame, text="", font="Arial, 2", foreground=bg_col, background=bg_col).pack()
     pre_title.pack()
     Label(pre_button_frame, text="", font="Arial, 5", foreground=bg_col, background=bg_col).pack()
-    Label(pre_button_frame, text="Open Folder :" + " " * 21, font="Arial, 10", foreground="white", background=bg_col).pack()
+    Label(pre_button_frame, text="Open Folder :" + " " * 19, font="Arial, 10", foreground="white", background=bg_col).pack()
     pre_browse_button.pack(padx=10, pady=10, ipadx=20, ipady=15)
 
 
+# Update
 def up_gui():
     u_win = Toplevel(root)
     u_win.iconbitmap(r"resource/ProPixel-AI.ico")
@@ -385,7 +462,7 @@ root.resizable(False, False)
 
 image_path = StringVar()
 Label(root, text=" ", font="Arial, 10", foreground=bg_col, background=bg_col).pack(side=RIGHT)
-canvas = Canvas(root, width=1022, height=530, bd=0, highlightthickness=0, relief='ridge')
+canvas = Canvas(root, width=screen4[0], height=screen4[1], bd=0, highlightthickness=0, relief='ridge')
 canvas.configure(bg=can_col)
 canvas.pack(side=RIGHT)
 display_text()
@@ -395,9 +472,9 @@ font = ("Arial", 12)
 button_frame = Frame(root, background=bg_col)
 browse_button = CTkButton(button_frame, text="Browse", font=font)
 browse_button.bind("<Button-1>", load_image)
-upscale_button = CTkButton(button_frame, text="Upscale Image", font=font, fg_color=but_col, command=upscale_photos)
-remove_bg_button = CTkButton(button_frame, text="Remove Background", font=font, fg_color=but_col, command=remove_bg)
-colorize_button = CTkButton(button_frame, text="Colorize B&W Image", font=font, fg_color=but_col, command=colorize_photo)
+upscale_button = CTkButton(button_frame, text="Upscale", font=font, fg_color=but_col, command=upscale_photos)
+remove_bg_button = CTkButton(button_frame, text="RemBG", font=font, fg_color=but_col, command=remove_bg)
+colorize_button = CTkButton(button_frame, text="Colorize", font=font, fg_color=but_col, command=colorize_photo)
 settings_button = CTkButton(button_frame, text="Settings", font=font, command=settings_func, fg_color=but_col)
 update_button = CTkButton(button_frame, text="Check Updates", font=font, fg_color=but_col, command=up_gui)
 
@@ -411,15 +488,15 @@ tk_image = ImageTk.PhotoImage(org_image)
 
 Label(button_frame, image=tk_image, foreground=bg_col, background=bg_col).pack()
 Label(button_frame, text="", font="Arial, 5", foreground=bg_col, background=bg_col).pack()
-Label(button_frame, text="Browse Image :" + " " * 19, font="Arial, 10", foreground="white", background=bg_col).pack()
+Label(button_frame, text="Browse Image :" + " " * 18, font="Arial, 10", foreground="white", background=bg_col).pack()
 browse_button.pack(padx=10, pady=10, ipadx=20, ipady=15)
 Label(button_frame, text="", font="Arial, 5", foreground=bg_col, background=bg_col).pack()
-Label(button_frame, text="AI Enhancers :" + " " * 19, font="Arial, 10", foreground="white", background=bg_col).pack()
+Label(button_frame, text="AI Enhancers :" + " " * 18, font="Arial, 10", foreground="white", background=bg_col).pack()
 upscale_button.pack(padx=10, pady=10, ipadx=20, ipady=15)
 remove_bg_button.pack(padx=10, ipadx=20, ipady=15)
 colorize_button.pack(padx=10, pady=10, ipadx=20, ipady=15)
 Label(button_frame, text="", font="Arial, 5", foreground=bg_col, background=bg_col).pack()
-Label(button_frame, text="Tweak Settings :" + " " * 16, font="Arial, 10", foreground="white", background=bg_col).pack()
+Label(button_frame, text="Tweak Settings :" + " " * 15, font="Arial, 10", foreground="white", background=bg_col).pack()
 settings_button.pack(padx=10, pady=5, ipadx=20)
 update_button.pack(padx=10, pady=5, ipadx=20)
 Label(button_frame, text=ver_tex, bg=bg_col, fg=ver_col, font=("Arial", 9)).pack(pady=17)

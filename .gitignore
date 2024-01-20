@@ -1,4 +1,8 @@
 playground.py
-Mine_EDT/
-model/
 __pycache__/
+model/colorizer/colorization_deploy_v2.prototxt
+model/colorizer/colorization_release_v2.caffemodel
+model/colorizer/pts_in_hull.npy
+model/remover/isnet-general-use.onnx
+model/upscaler/RealESRGAN_x2.pth
+model/upscaler/RealESRGAN_x4.pth

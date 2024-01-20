@@ -46,7 +46,7 @@ python main.py
 
 ## Acknowledgments
 - [xuebinqin](https://github.com/xuebinqin/DIS)
-- [richzhang](https://github.com/richzhang/colorization)
+- [richzhang](https://github.com/richzhang/colorization/tree/caffe)
 - [Xintao](https://github.com/xinntao/Real-ESRGAN)
 - [ai-forever](https://github.com/ai-forever/Real-ESRGAN)
 - [TomSchimansky](https://github.com/TomSchimansky/CustomTkinter)

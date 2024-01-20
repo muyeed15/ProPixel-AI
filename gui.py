@@ -434,7 +434,7 @@ def interface():
         u_win.config(bg=bg_col)
 
         def web_link():
-            webbrowser.open_new_tab("https://sourceforge.net/")
+            webbrowser.open_new_tab("https://sourceforge.net/projects/propixel-ai/")
             root.destroy()
         
         up_b = CTkButton(u_win, text="Update", font=("Arial", 12), command=web_link)

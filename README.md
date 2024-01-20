@@ -4,6 +4,9 @@
 
 ProPixel AI is a Python-based image processing tool for Microsoft Windows that offers three powerful features: Background Removal, Image Colorization, and Image Upscaling. The tool leverages state-of-the-art deep learning models for each functionality.
 
+## Download
+[![Download Brightness Control](https://a.fsdn.com/con/app/sf-download-button)](https://sourceforge.net/projects/propixel-ai/files/latest/download)
+
 ## Features
 
 ### 1. Remove Background

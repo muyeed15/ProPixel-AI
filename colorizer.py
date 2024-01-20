@@ -1,11 +1,11 @@
-# Modules
-import numpy
-import cv2
-import os
-
-
 # Colorize function
 def colorize_image(image_path):
+    # Modules
+    import numpy
+    import cv2
+    import os
+
+
     # Config folder
     if os.path.exists("config") == False:
         os.makedirs("config")

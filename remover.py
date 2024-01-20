@@ -1,12 +1,12 @@
-# Modules
-import cv2
-import numpy
-import os
-import onnxruntime
-
-
 # Remove background
 def remove_background(image_path):
+    # Modules
+    import cv2
+    import numpy
+    import os
+    import onnxruntime
+
+
     # Config folder
     if os.path.exists("config") == False:
         os.makedirs("config")

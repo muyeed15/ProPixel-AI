@@ -1,13 +1,12 @@
-# Modules
-import torch
-from PIL import Image
-from RealESRGAN import RealESRGAN
-import os
-import shutil
-
-
 # Upscale function
 def upscale_image(image_path):
+    # Modules
+    import torch
+    from PIL import Image
+    from RealESRGAN import RealESRGAN
+    import os
+    import shutil
+
     # Config folder
     if os.path.exists("config") == False:
         os.makedirs("config")

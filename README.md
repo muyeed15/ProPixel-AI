@@ -2,7 +2,7 @@
 
 # ProPixel AI
 
-ProPixel AI is a Python-based image processing tool for Windows OS that offers three powerful features: Background Removal, Image Colorization, and Image Upscaling. The tool leverages state-of-the-art deep learning models for each functionality.
+ProPixel AI is a Python-based image processing tool for Microsoft Windows that offers three powerful features: Background Removal, Image Colorization, and Image Upscaling. The tool leverages state-of-the-art deep learning models for each functionality.
 
 ## Features
 
@@ -38,6 +38,9 @@ pip install tk, customtkinter, pillow, requests, hdpitkinter, numpy, opencv-pyth
 ```bash
 pip install git+https://github.com/sberbank-ai/Real-ESRGAN.git
 ```
+
+### Download Models
+You must download the models from the provided links, and you'll find these links in the respective directories within the model folders. Place the downloaded files in their corresponding directories.
 
 ### Usage
 ```bash

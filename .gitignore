@@ -1,3 +1,4 @@
+.gitignore
 playground.py
 __pycache__/
 model/colorizer/colorization_deploy_v2.prototxt

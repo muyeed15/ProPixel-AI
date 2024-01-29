@@ -68,7 +68,11 @@ def interface():
         open(r"config/edge.ini", "w").write(str(2))
 
     # Supported files
-    s_files = [".jpg", ".jpeg", ".png", ".bmp", ".webp"]
+    s_files = [".jpg", ".JPG",
+               ".jpeg", ".JPEG",
+               ".png", ".PNG",
+               ".bmp", ".BMP",
+               ".webp", ".WEBP",]
 
     # Theme
     set_appearance_mode("light")
